@@ -1,10 +1,14 @@
 var express = require('express');
-var redis = require("redis");
+var redis = require('redis');
 
 var client = redis.createClient(); // defaults to local 127.0.0.1:6379
 
-client.on("error", function (err) {
-    console.log("Error " + err);
+client.on('connect', function() {
+  console.log('connected to Redis');
+});
+
+client.on('error', function (err) {
+    console.log('Error ' + err);
 });
 
 console.log(__dirname);
@@ -23,30 +27,24 @@ module.exports = (function() {
   // });
 
   api.get('/posts', function(req, res) {
-    console.log(req.query);
+    console.log('query: ', req.query);
 
     if (!req.query.sortBy && !req.query.page && !req.query.limit) {
-      // send request to instagram to get posts
-      InstaData.init(client)
-        .then(function() {
-          // success
-        }, function() {
-          // fail
-        });
-      // store in redis
+      InstaData.init(client, function(mediaData) {
+        console.log('about to send to client');
+        res.json(mediaData);
+      });
     } else {
-      InstaData.get(req.query.sortBy, req.query.offset, req.query.limit)
+      // get from redis
+      InstaData.sort(req.query.sortBy, req.query.offset, req.query.limit)
         .then(function() {
           // success
+          // res.json({ 'key': 'value' });
         }, function() {
           // fail
+          res.json({});
         });
     }
-
-    // sort based on criteria
-    // send 10 back
-
-    res.json({ 'key': 'value' });
   });
 
   // api.get('/posts/sort', function(req, res) {
