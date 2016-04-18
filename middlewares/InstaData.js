@@ -21,7 +21,8 @@ module.exports = (function() {
       promise,
       media = {},
       client = client,
-      options = options;
+      options = options,
+      dataSavable = true;
 
       promise = new Promise(function(resolve, reject) {
         // (refactor nested promises wiht .all)
@@ -33,7 +34,7 @@ module.exports = (function() {
 
           // save to redis
           media.forEach(function(medium) {
-            if (loadedCount < defaultDataSize) {
+            if (loadedCount < defaultDataSize && dataSavable) {
 
               client.multi().hmset('media:' + medium.id, 'mediaData', JSON.stringify(medium))
               .sadd('mediaList', 'media:'+medium.id)
@@ -44,9 +45,14 @@ module.exports = (function() {
 
               loadedCount += 1;
               console.log(loadedCount);
-            } else {
+            } else if (options['loop'] && dataSavable) {
               console.log('dataset limit reached')
               reject({err: 'dataset limit is reached'});
+            } else if (dataSavable) {
+              // return 10
+              console.log('reached resolve break')
+              resolve(media);
+              dataSavable = false;
             }
           });
 
@@ -99,9 +105,9 @@ module.exports = (function() {
         limit = options.limit || defaultClientLimit,
         result = [];
 
-      client.sort('mediaList', 'by', sortBy + '_*', 'desc', function(err, replies) {
+      client.sort('mediaList', 'by', sortBy + '_*', 'desc', 'limit', offset, limit, function(err, replies) {
 
-        console.log('sort err: ', err)
+        console.log('sort err: ', err);
 
         replies.forEach(function(reply, i) {
           client.hgetall(reply, function(err, obj) {
@@ -109,7 +115,7 @@ module.exports = (function() {
             result.push(JSON.parse(obj.mediaData));
 
             // if result is filled, callback
-            if (Object.keys(result).length === limit) {
+            if (i === replies.length - 1) {
               console.log('printing result: ', result);
               callback(result);
             }

@@ -31,6 +31,7 @@ var DataCleaner = (function() {
       // });
 
       // format them into savable format and return
+
       savableData = [{
         id: '1230062364457213925_259220806',
         type: 'image',
@@ -93,8 +94,8 @@ var DataCleaner = (function() {
          { lowRes: 'https://scontent.cdninstagram.com/t51.2885-15/s320x320/e15/12725018_933400126779564_1274178814_n.jpg?ig_cache_key=MTIyOTc3NTI3NDkzNDgzNjc2NQ%3D%3D.2',
            stdRes: 'https://scontent.cdninstagram.com/t51.2885-15/e15/12725018_933400126779564_1274178814_n.jpg?ig_cache_key=MTIyOTc3NTI3NDkzNDgzNjc2NQ%3D%3D.2' },
         videos:
-         { lowRes: 'https://scontent.cdninstagram.com/t50.2886-16/13026023_1166925276659812_1616995230_s.mp4',
-           stdRes: 'https://scontent.cdninstagram.com/t50.2886-16/13017817_807894319316152_751052477_n.mp4' } },
+         { lowRes: 'https://scontent.cdninstagram.com/t50.2886-16/13045926_1734458316825814_1427029712_n.mp4',
+           stdRes: 'https://scontent.cdninstagram.com/t50.2886-16/13045926_1734458316825814_1427029712_n.mp4' } },
       { id: '1229702461255359525_259220806',
         type: 'image',
         commentCount: 20123,

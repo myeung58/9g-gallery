@@ -11,10 +11,12 @@ var ApiRequest = (function() {
         //     reject(error);
         //   }
         // });
+
         resolve({
           pagination: {next_max_id: '1229518753651006851_259220806'},
           data: {}
         });
+
       });
 
       return promise;

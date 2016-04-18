@@ -9,26 +9,44 @@ angular.module('9g-gallery').service('RequestService', function ($http) {
     $http.get(url)
       .then(function(response) {
         console.log('got response back');
-        console.log(response.data);
-        // if (response.data[searchTerm]) {
-        //   callback(response.data[searchTerm]);
-        // } else {
-          callback();
-        // }
 
-      });
-  };
-
-  this.getPosts = function(summonerId, callback) {
-    var url = this.urls.posts + '?sortBy';
-
-    $http.get(url)
-      .then(function(response) {
-        if (response.data[summonerId]) {
-          callback(response.data[summonerId]);
+        if (response.data.length) {
+          console.log('response ', response.data);
+          callback(response.data);
         } else {
           callback();
         }
+
+      }, function() {
+        console.log('something went wrong');
+      });
+  };
+
+  this.getPosts = function(options, callback) {
+    var url = this.urls.posts + '?';
+
+    if (options.sortBy) {
+      console.log(options.sortBy);
+      url = url + 'sortBy=' + options.sortBy;
+    }
+
+    if (options.offset) {
+      console.log(options.offset);
+      url = url + '&offset=' + options.offset;
+    }
+
+    if (options.limit) {
+      console.log(options.limit);
+      url = url + '&limit=' + options.limit;
+    }
+
+    console.log('about to get posts: ', url);
+
+    $http.get(url)
+      .then(function(response) {
+        callback(response.data);
+      }, function() {
+        console.log('something went wrong');
       });
   };
 

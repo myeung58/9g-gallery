@@ -1,20 +1,38 @@
-<div class="main">
+<div class="main" scroll-bottom="onScrollBottom()">
   <!-- browse posts by -->
   <div class="sort">
-    <p ng-click="sortBy('date')">Date added</p>
-    <p ng-click="sortBy('like')">Likes</p>
-    <p ng-click="sortBy('comment')">Comments</p>
+    <p ng-click="sortPostsBy('createdAt')">Date added</p>
+    <p ng-click="sortPostsBy('likes')">Likes</p>
+    <p ng-click="sortPostsBy('comments')">Comments</p>
   </div>
 
   <!-- main content -->
-  <div class="content" ng-repeat="post in posts">
-  </div>
+  <div class="content container">
+      <div ng-repeat="post in posts">
+        <div class="row post">
+          <div class="post-media col-xs-12 col-sm-8 col-lg-8">
 
+            <div ng-if="post.type === 'video'">
+              <video class="post-media-video" controls>
+                <source src="{{post.videos.stdRes | trustResource}}" type="video/mp4">
+                <source src="{{post.videos.lowRes | trustResource}}" type="video/ogg">
+                Your browser does not support the video tag
+              </video>
+            </div>
+
+            <div ng-if="post.type === 'image'" class="post-wrap">
+              <img src="{{post.images.stdRes}}" class="post-media-image">
+            </div>
+
+          </div>
+
+          <div class="post-content col-xs-12 col-sm-4 col-lg-4">
+          </div>
+
+        </div>
+      </div>
+  </div>
   <!-- loading screen -->
-  <!-- <video width="320" height="240" controls>
-    <source src="https://scontent.cdninstagram.com/t50.2886-16/13008545_1788024718099012_926431166_s.mp4" type="video/mp4">
-    <source src="movie.ogg" type="video/ogg">
-    Your browser does not support the video tag.
-  </video> -->
+  <!--  -->
   <div class="loading" ng-show="render.loading"><p>loading...</p></div>
 </div>

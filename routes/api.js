@@ -37,7 +37,7 @@ module.exports = (function() {
       });
     } else {
       InstaData.get(client, options, function(mediaData) {
-        console.log('about to send sort to client');
+        console.log('about to send result to client');
         res.json(mediaData);
       });
     }
