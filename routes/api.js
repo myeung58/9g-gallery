@@ -11,8 +11,6 @@ client.on('error', function (err) {
     console.log('Error ' + err);
 });
 
-console.log(__dirname);
-// var ApiRequest = require('../middlewares/ApiRequest.js');
 var InstaData = require('../middlewares/InstaData.js');
 
 module.exports = (function() {
@@ -20,37 +18,30 @@ module.exports = (function() {
 
   var api = express.Router();
 
-  // api.use(function(req, res, next){
-  //   // storing this to redis
-  //   client.set('key', 'val', redis.print);
-  //   next();
-  // });
-
   api.get('/posts', function(req, res) {
     console.log('query: ', req.query);
 
-    if (!req.query.sortBy && !req.query.page && !req.query.limit) {
+    var options = {
+      sortBy: req.query['sortBy'],
+      offset: req.query['offset'],
+      limit: req.query['limit']
+    };
+
+    if (!options.sortBy && !options.offset && !options.limit) {
       InstaData.init(client, function(mediaData) {
         console.log('about to send to client');
         res.json(mediaData);
+
+        console.log('ABOUT TO PREPARE DATASET');
+        InstaData.prepareDataset(client);
       });
     } else {
-      // get from redis
-      InstaData.sort(req.query.sortBy, req.query.offset, req.query.limit)
-        .then(function() {
-          // success
-          // res.json({ 'key': 'value' });
-        }, function() {
-          // fail
-          res.json({});
-        });
+      InstaData.get(client, options, function(mediaData) {
+        console.log('about to send sort to client');
+        res.json(mediaData);
+      });
     }
   });
-
-  // api.get('/posts/sort', function(req, res) {
-  //   console.log(req.query);
-
-  // });
 
   return api;
 })();
