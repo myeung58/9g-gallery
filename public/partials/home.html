@@ -5,9 +5,9 @@
     <!-- browse posts by -->
     <div class="sort">
       <p class="sort-title">Browse by: </p>
-        <p class="sort-option" ng-click="sortPostsBy('createdAt')">Date added</p>
-        <p class="sort-option" ng-click="sortPostsBy('likes')">Likes</p>
-        <p class="sort-option" ng-click="sortPostsBy('comments')">Comments</p>
+        <p ng-class="{'sort-option': !isCurrentSort('createdAt'), 'sort-current': isCurrentSort('createdAt')}" ng-click="sortPostsBy('createdAt')">Date added</p>
+        <p ng-class="{'sort-option': !isCurrentSort('likes'), 'sort-current': isCurrentSort('likes')}" ng-click="sortPostsBy('likes')">Likes</p>
+        <p ng-class="{'sort-option': !isCurrentSort('comments'), 'sort-current': isCurrentSort('comments')}" ng-click="sortPostsBy('comments')">Comments</p>
     </div>
 
       <div ng-repeat="post in posts">
@@ -15,29 +15,40 @@
           <div class="post-media col-xs-12 col-sm-8 col-lg-8">
 
             <div ng-if="post.type === 'video'">
-              <video class="post-media-video" controls>
-                <source src="{{post.videos.stdRes | trustResource}}" type="video/mp4">
-                <source src="{{post.videos.lowRes | trustResource}}" type="video/ogg">
-                Your browser does not support the video tag
-              </video>
+              <a href="{{post.link}}" target="_blank">
+                <video class="post-media-video" controls>
+                  <source src="{{post.videos.stdRes | trustResource}}" type="video/mp4">
+                  <source src="{{post.videos.lowRes | trustResource}}" type="video/ogg">
+                  Your browser does not support the video tag
+                </video>
+              </a>
             </div>
 
             <div ng-if="post.type === 'image'" class="post-wrap">
-              <img src="{{post.images.stdRes}}" class="post-media-image">
+              <a href="{{post.link}}" target="_blank">
+                <img src="{{post.images.stdRes}}" class="post-media-image">
+              </a>
             </div>
 
           </div>
 
           <div class="post-content col-xs-12 col-sm-4 col-lg-4">
-            <!-- <div>{{post.caption | parseTag}}</div> -->
-            <p ng-bind-html="post.caption | parseTag"></p>
-            <!-- time -->
-            <p>{{post.createdAt | dateFormat}}</p>
-            <p am-time-ago="post.createdAt | amParse:'YYYY.MM.DD HH:mm:ss'"></p>
-            <!-- like count -->
-            <p>{{post.likeCount}}</p>
-            <!-- comment count -->
-            <p>{{post.commentCount}}</p>
+
+            <p class="content-caption" ng-bind-html="post.caption | parseTag"></p>
+
+            <p class="content-date">{{post.createdAt | dateFormat}}</p>
+
+            <div class="content-info-wrap">
+              <div class="content-info">
+                <i class="fa fa-heart fa-2x "></i>
+                <p class="content-info-text">{{post.likeCount | countFormat}}</p>
+              </div>
+
+              <div class="content-info">
+                <i class="fa fa-comment fa-2x "></i>
+                <p class="content-info-text">{{post.commentCount | countFormat}}</p>
+              </div>
+            </div>
           </div>
 
         </div>

@@ -14,11 +14,9 @@ angular.module('9g-gallery').filter('parseTag', function ($sce) {
     parsedCaption = parsedCaption
       .replace(/[@]+[A-Za-z0-9-_]+/g, function(u) {
       var url = urls.show + u.substring(1);
-
       return makeLink(url, u);
     }).replace(/[#]+[A-Za-z0-9-_]+/g, function(t) {
       var url = urls.search + t.substring(1);
-
       return makeLink(url, t);
     });
 

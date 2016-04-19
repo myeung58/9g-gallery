@@ -20,6 +20,8 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
 
   $scope.sortPostsBy = function(sortBy) {
     console.log(sortBy);
+    if ($scope.isCurrentSort(sortBy)) { return; }
+
     $scope.resetContent();
     $scope.current.sortBy = sortBy;
     $scope.loading = true;
@@ -49,6 +51,10 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     Array.prototype.push.apply($scope.posts, posts);
     console.log('updatd number of posts: ', $scope.posts.length);
   };
+
+  $scope.isCurrentSort = function(sortBy) {
+    return $scope.current.sortBy === sortBy;
+  }
 
   $scope.resetContent = function() {
     $scope.posts = [];
