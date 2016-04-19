@@ -8,7 +8,7 @@ module.exports = (function() {
     baseUrl = 'https://api.instagram.com/v1/users/259220806/media/recent?access_token=' + access_token,
     initMediaCount = 10, // to get 10 posts from instagram initially
     regularMediaCount = 25, // number of posts to retrieve per request
-    defaultDataSize = 30,
+    defaultDataSize = 100,
     loadedCount = 0, // to keep track of number of posts received
     maxIdString = '',
     defaultClientOffset = 0,

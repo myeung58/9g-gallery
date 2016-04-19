@@ -1,6 +1,6 @@
-angular.module('9g-gallery').filter("trustResource", ['$sce', function ($sce) {
-    return function (resource) {
-      console.log(resource);
-      return $sce.trustAsResourceUrl(resource);
-    };
-  }]);
+angular.module('9g-gallery').filter('trustResource', function ($sce) {
+  return function (resource) {
+    console.log(resource);
+    return $sce.trustAsResourceUrl(resource);
+  };
+});

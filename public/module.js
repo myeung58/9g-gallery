@@ -1,4 +1,4 @@
-var app = angular.module('9g-gallery', ['ui.router']);
+var app = angular.module('9g-gallery', ['ui.router', 'ngSanitize', 'angularMoment']);
 
 app.config([
   '$stateProvider',
