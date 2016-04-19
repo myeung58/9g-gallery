@@ -1,8 +1,6 @@
 <div class="main" scroll-bottom="onScrollBottom()">
 
-  <!-- main content -->
   <div class="content container">
-    <!-- browse posts by -->
     <div class="sort">
       <p class="sort-title">Browse by: </p>
         <p ng-class="{'sort-option': !isCurrentSort('createdAt'), 'sort-current': isCurrentSort('createdAt')}" ng-click="sortPostsBy('createdAt')">Date added</p>
@@ -54,7 +52,6 @@
         </div>
       </div>
   </div>
-  <!-- loading screen -->
-  <!--  -->
+
   <div class="loading" ng-show="render.loading"><p>loading...</p></div>
 </div>

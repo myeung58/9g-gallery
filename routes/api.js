@@ -19,8 +19,6 @@ module.exports = (function() {
   var api = express.Router();
 
   api.get('/posts', function(req, res) {
-    console.log('query: ', req.query);
-
     var options = {
       sortBy: req.query['sortBy'],
       offset: req.query['offset'],
@@ -29,15 +27,13 @@ module.exports = (function() {
 
     if (!options.sortBy && !options.offset && !options.limit) {
       InstaData.init(client, function(mediaData) {
-        console.log('about to send to client');
         res.json(mediaData);
 
-        console.log('ABOUT TO PREPARE DATASET');
+        // prepare the dataset of 200 posts
         InstaData.prepareDataset(client);
       });
     } else {
       InstaData.get(client, options, function(mediaData) {
-        console.log('about to send result to client');
         res.json(mediaData);
       });
     }

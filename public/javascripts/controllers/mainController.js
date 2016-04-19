@@ -1,5 +1,4 @@
 angular.module('9g-gallery').controller('mainController', function($scope, RequestService) {
-
   $scope.posts = [];
   $scope.loading = false;
   $scope.current = {
@@ -8,7 +7,7 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     limit: 10
   };
 
-  // immediately send request to get 9gag posts
+  // send request to backend api to get inital posts
   $scope.init = function() {
     if ($scope.posts.length) { $scope.resetContent(); };
 
@@ -18,8 +17,8 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     RequestService.getInitialPosts($scope.updatePostContent);
   };
 
+  // tell backend to sort and get sorted posts
   $scope.sortPostsBy = function(sortBy) {
-    console.log(sortBy);
     if ($scope.isCurrentSort(sortBy)) { return; }
 
     $scope.resetContent();
@@ -29,43 +28,35 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     RequestService.getPosts($scope.current, $scope.updatePostContent);
   };
 
+  // get paginated posts based on current sort pattern
   $scope.onScrollBottom = function() {
-    console.log('reached bottom');
-
-    // get paginated results based on currentSortBy
-    console.log('loading: ', $scope.loading);
     if (!$scope.loading) {
       $scope.loading = true;
-
-      // $scope.current.offset = $scope.posts.length;
-
-      $scope.current.offset = 2;
-      $scope.current.limit = 5;
+      $scope.current.offset = $scope.posts.length;
 
       RequestService.getPosts($scope.current, $scope.updatePostContent);
     }
   };
 
+  // update the list of presentable posts
   $scope.updatePostContent = function(posts) {
     $scope.loading = false;
     Array.prototype.push.apply($scope.posts, posts);
-    console.log('updatd number of posts: ', $scope.posts.length);
   };
 
   $scope.isCurrentSort = function(sortBy) {
     return $scope.current.sortBy === sortBy;
-  }
+  };
 
   $scope.resetContent = function() {
     $scope.posts = [];
     $scope.render = { loading: false };
     $scope.current = {
       sortBy: '',
-      offset: 0,
+      offset: 10,
       limit: 10
     };
   };
 
   $scope.init();
-
 });
