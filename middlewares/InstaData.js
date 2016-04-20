@@ -13,7 +13,7 @@ module.exports = (function() {
     maxIdString = '', // pagination with instagram api
     defaultClientOffset = 0,
     defaultClientLimit = 10,
-    getMediaData;
+    getMediaData, resetState;
 
   getMediaData = function(client, mediaCount, options) {
 
@@ -66,8 +66,14 @@ module.exports = (function() {
     return promise;
   };
 
+  resetState = function() {
+    loadedCount = 0;
+    maxIdString = '';
+  };
+
   return {
     init: function(client, callback) {
+      resetState();
       getMediaData(client, initMediaCount, {loop: false})
         .then(function(mediaData) {
           callback(mediaData);

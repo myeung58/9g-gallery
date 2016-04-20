@@ -53,7 +53,7 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     $scope.render = { loading: false };
     $scope.current = {
       sortBy: '',
-      offset: 10,
+      offset: 0,
       limit: 10
     };
   };

@@ -5,6 +5,7 @@ var client = redis.createClient(); // defaults to local 127.0.0.1:6379
 
 client.on('connect', function() {
   console.log('connected to Redis');
+  client.flushdb();
 });
 
 client.on('error', function (err) {
@@ -24,8 +25,10 @@ module.exports = (function() {
       offset: req.query['offset'],
       limit: req.query['limit']
     };
-
+    console.log(options);
     if (!options.sortBy && !options.offset && !options.limit) {
+      client.flushdb(function(err, reply) {console.log(err); console.log(reply);});
+
       InstaData.init(client, function(mediaData) {
         res.json(mediaData);
 
