@@ -37,10 +37,33 @@ angular.module('9g-gallery').service('RequestService', function ($http) {
 
     $http.get(url)
       .then(function(response) {
+        console.log(response.data);
         callback(response.data);
       }, function() {
         console.log('something went wrong');
       });
   };
+
+  this.pinPost = function(post, callback) {
+    var url = this.urls.posts + '/' + post.id + '/pin';
+
+    $http.put(url, {})
+      .then(function(res){
+        console.log('responded');
+        console.log(res);
+        callback();
+      });
+  };
+
+  this.unpinPost = function(post, callback) {
+    var url = this.urls.posts + '/' + post.id + '/unpin';
+
+    $http.put(url, {})
+      .then(function(res){
+        console.log('responded');
+        console.log(res);
+        callback();
+      });
+  }
 
 });

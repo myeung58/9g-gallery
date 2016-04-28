@@ -39,6 +39,7 @@ module.exports = (function() {
               .set('comments_'+'media:' + medium.id, medium.commentCount)
               .set('likes_'+'media:' + medium.id, medium.likeCount)
               .set('createdAt_'+'media:' + medium.id, medium.createdAt)
+              .set('pinned_'+'media:' + medium.id, false)
               .exec(function (err, replies) { return; });
 
               loadedCount += 1;
@@ -70,6 +71,10 @@ module.exports = (function() {
     loadedCount = 0;
     maxIdString = '';
   };
+
+  isTrue = function(boolStr) {
+    return boolStr === 'true';
+  }
 
   return {
     init: function(client, callback) {
@@ -105,16 +110,41 @@ module.exports = (function() {
         replies.forEach(function(reply, i) {
           client.hgetall(reply, function(err, obj) {
 
-            result.push(JSON.parse(obj.mediaData));
+            client.get('pinned_'+reply, function(err, reply) {
+              var data = JSON.parse(obj.mediaData);
+              data.pinned = isTrue(reply);
 
-            if (i === replies.length - 1) {
-              callback(result);
-            }
+              result.push(data);
+
+              if (i === replies.length - 1) {
+                callback(result);
+              }
+            });
+
           });
         })
 
       })
 
+    },
+
+    pinPost: function(client, postId, callback) {
+      client.set('pinned_media:'+postId, true, function(err, reply) {
+
+        if (reply === 'OK') {
+          callback();
+        }
+      });
+    },
+
+    // can be refactored into one method to handle both pinPost and unpinPost
+    unpinPost: function(client, postId, callback) {
+      client.set('pinned_media:'+postId, false, function(err, reply) {
+
+        if (reply === 'OK') {
+          callback();
+        }
+      });
     }
 
   };

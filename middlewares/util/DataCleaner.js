@@ -10,6 +10,7 @@ var DataCleaner = (function() {
         savableObj = {};
         savableObj.id = data.id;
         savableObj.type = data.type;
+        savableObj.pinned = false;
         savableObj.commentCount = data.comments.count;
         savableObj.likeCount = data.likes.count;
         savableObj.createdAt = data.created_time;
@@ -29,6 +30,8 @@ var DataCleaner = (function() {
 
         savableData.push(savableObj);
       });
+
+
 
       return savableData;
     }

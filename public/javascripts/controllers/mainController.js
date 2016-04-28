@@ -48,6 +48,26 @@ angular.module('9g-gallery').controller('mainController', function($scope, Reque
     return $scope.current.sortBy === sortBy;
   };
 
+  $scope.pin = function(post) {
+    console.log('about to pin', post);
+    RequestService.pinPost(post, function() {
+      // render post as pinned
+      post.pinned = true;
+      console.log(post);
+      // move post to pinned post group
+    });
+  };
+
+  $scope.unpin = function(post) {
+    console.log('about to unpin', post);
+    RequestService.unpinPost(post, function() {
+      // render post as unpinned
+      post.pinned = false;
+      console.log(post);
+      // move post to pinned post group
+    });
+  };
+
   $scope.resetContent = function() {
     $scope.posts = [];
     $scope.render = { loading: false };

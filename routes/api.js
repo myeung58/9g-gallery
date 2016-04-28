@@ -42,5 +42,17 @@ module.exports = (function() {
     }
   });
 
+  api.put('/posts/:id/pin', function (req, res) {
+    InstaData.pinPost(client, req.params.id, function() {
+      res.json({});
+    });
+  });
+
+  api.put('/posts/:id/unpin', function (req, res) {
+    InstaData.unpinPost(client, req.params.id, function() {
+      res.json({});
+    });
+  });
+
   return api;
 })();

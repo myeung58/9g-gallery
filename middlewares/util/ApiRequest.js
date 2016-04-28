@@ -11,6 +11,7 @@ var ApiRequest = (function() {
             reject(error);
           }
         });
+
       });
 
       return promise;
